@@ -29,6 +29,8 @@ end
 
 
 """
+包含不参与计算的土壤层
+
 # Arguments
 - `method`: 
   + `Tsurf` : Tsurf boundary condition, 第一类边界条件
@@ -47,6 +49,9 @@ function TsoilEquation(dT, T, soil::Soil, t; method="Tsurf", ibeg::Int=1)
   end
 end
 
+# 去掉不参与计算的土壤层
+# dT: [ibeg:N]
+# T : [ibeg:N]
 function TsoilEquation_partial(dT, T, p::Soil, t; method="Tsurf", ibeg::Int=1)
   p.du[ibeg:end] .= dT
   p.u[ibeg:end] .= T
@@ -54,6 +59,5 @@ function TsoilEquation_partial(dT, T, p::Soil, t; method="Tsurf", ibeg::Int=1)
   dT .= p.du[ibeg:end]
   return nothing
 end
-
 
 export TsoilEquation, TsoilEquation_partial, soil_HeatFlux!
