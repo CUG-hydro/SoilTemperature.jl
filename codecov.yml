@@ -1,0 +1,4 @@
+ignore:
+  - "src/GroundWater/GW_TOPMODEL.jl"
+  - "src/GroundWater/soilwater_zengdecker2009.jl"
+  - "src/backup/*"

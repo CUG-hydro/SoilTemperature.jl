@@ -1,0 +1,10 @@
+# Example Artifacts.toml file
+[USCRN2024]
+# 注意不是git commit
+git-tree-sha1 = "3d033367afe2ac08215b6780cd0aa4c2ed5beebe"
+lazy = true
+
+    [[USCRN2024.download]]
+    url = "https://gitlab.com/CUG-hydro/soildata/-/raw/master/SOIL/USCRN_hourly_2024_sp54_Apr-Jun.csv.gz.tar?inline=false"
+    sha256 = "549fb93ae9023c17c381921891cbbbf3bec05cbc1d69ef1ef5d17495823e8d68"
+    target = "SOIL"  # not work

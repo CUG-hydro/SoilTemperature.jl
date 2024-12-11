@@ -1,0 +1,32 @@
+name = "SoilTemperature"
+uuid = "bfcf99f4-4f7c-4af5-ac50-4832881b9765"
+authors = ["Dongdong Kong <kongdd@users.noreply.github.com>"]
+version = "0.1.0"
+
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+DiffEqBase = "2b5f629d-d688-5b77-993f-72d75c75574e"
+HydroTools = "179359cd-bac3-4aa1-bccd-287172463ab0"
+Parameters = "d96e819e-fc66-5662-9728-84c9c7592b0a"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+UnPack = "3a884ed6-31ef-47d7-9d2a-63182c4928ed"
+
+[sources]
+HydroTools = {url = "https://github.com/jl-pkgs/HydroTools.jl"}
+
+[compat]
+Dates = "1.11.0"
+DiffEqBase = "6.158.3"
+HydroTools = "0.1.6"
+Parameters = "0.12.3"
+Printf = "1.11.0"
+UnPack = "1.0.2"
+
+[extras]
+OrdinaryDiffEq = "1dea7af3-3e70-54e6-95c3-0bf5283fa5ed"
+RTableTools = "76227a05-389e-44bd-84ad-996dde4b1834"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test", "OrdinaryDiffEq", "RTableTools"]
