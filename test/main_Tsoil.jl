@@ -11,7 +11,12 @@ z, z₊ₕ, Δz₊ₕ = soil_depth_init(Δz)
 function plot_soil(i; ibeg=1)
   i2 = i + ibeg - 1
   title = @sprintf("layer %d: depth = %d cm", i2, -z[i2] * 100)
-  plot(; title)
+
+  time_min, time_max = minimum(t), maximum(t)
+  ticks = time_min:Dates.Day(7):time_max
+  xticks = ticks, Dates.format.(ticks, "mm-dd")
+
+  plot(; title, xticks)
   plot!(t, yobs[:, i], label="OBS")
   plot!(t, ysim[:, i], label="SIM")
 end
@@ -29,12 +34,14 @@ function init_soil(; Tsurf=20.0, dt=3600.0, soil_type=1, ibeg=2)
 
   κ, cv = soil_properties_thermal(Δz, Tsoil, m_liq, m_ice;
     soil_type, method="apparent-heat-capacity")
-  Soil{Float64}(; N, dt, z, z₊ₕ, Δz, Δz₊ₕ, κ, cv, Tsurf, Tsoil, ibeg)
+  param = SoilParam{Float64}(; N, κ, cv)
+  Soil{Float64}(; N, dt, z, z₊ₕ, Δz, Δz₊ₕ, param, Tsurf, Tsoil, ibeg)
 end
 
-function goal(theta;)
+function goal(theta; method="ODE")
   soil = init_soil(; soil_type=7)
-  ysim = model_Tsoil_sim(soil, Tsurf, theta;)
+  solver = Tsit5()
+  ysim = model_Tsoil_sim(soil, Tsurf, theta; method, solver)
   obs = yobs[:, 2:end][:]
   sim = ysim[:, 2:end][:]
   # of_MSE(obs, sim)

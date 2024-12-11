@@ -8,7 +8,6 @@ using Parameters
 include("Soil.jl")
 include("EquationTsoil.jl")
 include("Solve_Tsoil.jl")
-include("case_Bonan2019.jl")
 include("Soil_depth.jl")
 include("Soil_properties_thermal.jl")
 

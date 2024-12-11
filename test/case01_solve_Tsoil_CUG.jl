@@ -5,7 +5,7 @@ using Optim
 includet("main_Tsoil.jl")
 
 d = fread("$dir_soil/data/CUG_TS_202306.csv")
-t = d.time
+t = DateTime.(d.time, "yyyy-mm-ddTHH:MM:SSZ")
 A = Matrix(d[:, 2:end]) #|> drop_missing 
 
 ibeg = 2
@@ -19,8 +19,8 @@ solver = Tsit5()
 
 begin
   soil = init_soil(; soil_type=7)
-  method = "Bonan"
-  # method = "ODE"
+  # method = "Bonan"
+  method = "ODE"
 
   if method == "Bonan"
     ysim = solve_Tsoil_Bonan(soil, Tsurf)
@@ -37,7 +37,7 @@ end
 
 begin
   soil = init_soil(; soil_type=7)
-  x0 = [soil.κ; soil.cv]
+  x0 = [soil.param.κ; soil.param.cv]
   lower = [fill(0.1, 9); fill(0.1, 9) * 1e6]
   upper = [fill(10.0, 9); fill(5.0, 9) * 1e6]
 
@@ -45,7 +45,14 @@ begin
   @time theta, feval, exitflag = sceua(f, x0, lower, upper; maxn=Int(5 * 1e4))
 end
 
-ysim = model_Tsoil_sim(soil, Tsurf, theta;)
+ysim = model_Tsoil_sim(soil, Tsurf, theta; method, solver)
+
+begin
+  plot(
+    [plot_soil(i; ibeg) for i in 1:8]...,
+    size=(1200, 800))
+  savefig("case01_Tsoil_CUG_$(method).png")
+end
 
 # r = optimize(f, lower, upper, x0, Fminbox(inner_optimizer), options)
 # theta = r.minimizer
